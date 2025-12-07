@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <link rel="stylesheet" href="./styles.css/basic.css">
+    <link rel="stylesheet" href="./styles.css/style.css">
+</head>
+<body>
+    <div class="content-wrapper">
+    <header>
+        <div class="header_inner">
+        <div class="header_left">
+            <img src="" alt="Pokédex logo">
+            <h1>Pokédex</h1>
+        </div>
+        <div class="header_right">
+            <input id="search_input" oninput="searchPokemon()" type="text" placeholder="Pokémon suchen...">
+            <button id="search-btn btn" onclick="filterPokemons()"></button>
+        </div>
+        </div>
+    </header>
+
+    <main>
+          <!-- pokemon_container -->
+        <div id="pokemon_container">
+            <section class="pokemon_card" onclick="show_detail()">
+                <h3>#1 Bulbasaur</h3>
+                <img src="" alt="">
+                <div class="type_badges"></div>
+                <span class="type_badge"></span>
+                </section>
+            
+        
+        <!-- pokemon_dialog -->
+        <section role="dialog" aria-modal="true" class="pokemon_dialog">
+            <div class="dialog_header">
+                <div class="dialog_btn">
+                    <button class="dialog_btn_close btn" onclick="dialog_btn_close()">X</button>
+                </div>
+                <div class="pokemon_info">
+                <span id="pokemon_id"></span>
+                <h2 id="pokemon_name"></h2>
+                <p id="pokemon_typ"></p>
+                </div>
+            </div>
+        
+       <!-- pokemon_dialog_container -->
+        <section class="content">
+            <nav class="tabs">
+                <button onclick="information()" class="btn" id="information">Überblick</button>
+                <button onclick="stats()" class="btn" id="stats">Werte</button>
+                <button onclick="evo()" class="btn" id="evo">Entwicklung</button>
+            </nav>
+
+        <article class="pokemon_stats">
+            <div class="basic_stats">#
+                <div class="stats_container">
+                    <p id="pokemon_height"></p>
+                </div>
+                <div class="stats_container">
+                    <p id="pokemon_weight"></p>
+                </div>
+                <div class="stats_container">
+                    <p id="basic_ep"></p>
+                </div>
+            </div>
+            <div class="stats_tamplete">
+                <ul>
+                    <li id="pokemon_kp"></li>
+                    <li id="pokemon_dmg"></li>
+                    <li id="pokemon_def"></li>
+                    <li id="pokemon_s_dmg"></li>
+                    <li id="pokemon_s_def"></li>
+                    <li id="pokemon_Initiative"></li>
+                </ul>
+            </div>
+        </article>
+           <div class="dialog_footer">
+            <div class="next_container">
+                <button onclick="next_btn()" class="next_btn"></button>
+            </div>
+            <div class="back_container">
+                <button onclick="back_btn()" class="back_btn"></button>
+            </div>
+            </div>
+        </section>
+        </div>
+     </section>
+
+    </main>
+
+    <footer>
+        <div>
+            @2025 Copyright M.Kühn
+        </div>
+        <div>
+            Impressum
+        </div>
+    </footer>
+    </div>
+</body>
+</html>
