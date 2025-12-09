@@ -6,8 +6,10 @@
     <title>Pokédex</title>
     <link rel="stylesheet" href="./styles.css/basic.css">
     <link rel="stylesheet" href="./styles.css/style.css">
+    <script src="./scrtips.js/pokemon.js" defer></script>
+    <script src="./scrtips.js/main.js" defer></script>
 </head>
-<body>
+<body onload="onloadFunc()">
     <div class="content-wrapper">
     <header>
         <div class="header_inner">
@@ -16,23 +18,25 @@
             <h1>Pokédex</h1>
         </div>
         <div class="header_right">
-            <input id="search_input" oninput="searchPokemon()" type="text" placeholder="Pokémon suchen...">
-            <button id="search-btn btn" onclick="filterPokemons()"></button>
+            <input id="search_input" type="text" placeholder="search Pokémon...">
+            <button id="search_btn btn" onclick="filterPokemons()">search</button>
         </div>
         </div>
     </header>
 
     <main>
           <!-- pokemon_container -->
-        <div id="pokemon_container">
+        <div id="pokemon_container" class="pokemon_container">
             <section class="pokemon_card" onclick="show_detail()">
+                <div class="name_container">
                 <h3>#1 Bulbasaur</h3>
+                </div>
                 <img src="" alt="">
-                <div class="type_badges"></div>
+                <div class="type_badges">
                 <span class="type_badge"></span>
+                </div>
                 </section>
             
-        
         <!-- pokemon_dialog -->
         <section role="dialog" aria-modal="true" class="pokemon_dialog">
             <div class="dialog_header">
@@ -88,7 +92,10 @@
         </section>
         </div>
      </section>
-
+     <div id="loader" class="hidden">
+     <img src="./assets/bilder/simple_pokeball.gif" alt="Loading..." />
+    </div>
+     <button id="loadMoreBtn" onclick="loadMore()">Mehr laden</button>
     </main>
 
     <footer>
