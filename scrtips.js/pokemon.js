@@ -1,68 +1,112 @@
-// ===== GLOBALS =====
+// Pokemon Card rendern
 let pokemons = [];
-let activeList = [];
 let offset = 0;
-let currentIndex = 0;
 
 const API_BASE = "https://pokeapi.co/api/v2";
 const LIMIT = 20;
 
-let container; 
 
-// loader start
-document.addEventListener("DOMContentLoaded", () => {
-  initPokedex();
-});
+const TYPE_COLORS = {
+  normal: "#A8A878",
+  fire: "#F08030",
+  water: "#6890F0",
+  electric: "#F8D030",
+  grass: "#78C850",
+  ice: "#98D8D8",
+  fighting: "#C03028",
+  poison: "#A040A0",
+  ground: "#E0C068",
+  flying: "#A890F0",
+  psychic: "#F85888",
+  bug: "#A8B820",
+  rock: "#B8A038",
+  ghost: "#705898",
+  dragon: "#7038F8",
+  dark: "#705848",
+  steel: "#B8B8D0",
+  fairy: "#EE99AC",
+};
 
+function getTypeColor(pokemon) {
+  const mainType = pokemon.types[0].type.name;
+  return TYPE_COLORS[mainType] || "#888";
+}
 
-function initPokedex() {
-  container = document.getElementById("pokemon_container");
-  if (!container) {
-    console.error("pokemon_container not found");
+// load 
+async function loadMore() {
+  const res = await fetch(`${API_BASE}/pokemon?limit=${LIMIT}&offset=${offset}`);
+  const data = await res.json();
+
+  const details = await Promise.all(
+    data.results.map((entry) => fetch(entry.url).then((r) => r.json()))
+  );
+
+  pokemons.push(...details);
+  offset += LIMIT;
+}
+
+//  rendern 
+function renderList(list) {
+  const loader = document.getElementById("loader");
+  if (loader && !loader.classList.contains("hidden")) {
+   
     return;
   }
 
-  showLoader();
-  loadMore();
+  const container = document.getElementById("pokemon_container");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  list.forEach((p) => {
+    const card = document.createElement("section");
+    card.className = "pokemon_card";
+    card.style.background = `linear-gradient(135deg, ${getTypeColor(p)}, #222)`;
+
+    const typesHtml = p.types
+      .map(
+        (t) => `
+        <div class="type_box">
+          <span class="type_badge">${capitalize(t.type.name)}</span>
+        </div>
+      `
+      )
+      .join("");
+
+    const imgSrc = getPokemonImage(p);
+
+    card.innerHTML = `
+      <div class="card_header">
+        <h3>#${p.id} ${capitalize(p.name)}</h3>
+      </div>
+
+      <div class="card_body">
+        <div class="card_left">
+          <div class="type_badges">
+            ${typesHtml}
+          </div>
+        </div>
+
+        <div class="card_right">
+          <img class="pokemon_img" src="${imgSrc}" alt="${p.name}">
+        </div>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
 }
 
-// Loader
-function showLoader() {
-  const loader = document.getElementById("loader");
-  if (loader) {
-    loader.classList.remove("hidden");
-  }
+// Helper
+function getPokemonImage(pokemon) {
+  return (
+    pokemon.sprites?.other?.["official-artwork"]?.front_default ||
+    pokemon.sprites?.front_default ||
+    ""
+  );
 }
 
-function hideLoader() {
-  const loader = document.getElementById("loader");
-  if (loader) {
-    loader.classList.add("hidden");
-  }
-}
-
-
-async function loadMore() {
-  try {
-    const res = await fetch(`${API_BASE}/pokemon?limit=${LIMIT}&offset=${offset}`);
-    if (!res.ok) {
-      throw new Error("HTTP error " + res.status);
-    }
-
-    const data = await res.json();
-
-    const details = await Promise.all(
-      data.results.map((entry) => fetch(entry.url).then((r) => r.json()))
-    );
-
-    pokemons.push(...details);
-    offset += LIMIT;
-
-    activeList = [...pokemons];
-    renderList(activeList);
-  } catch (e) {
-    console.error("Error in loadMore:", e);
-  } finally {
-    hideLoader();
-  }
+function capitalize(str) {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
