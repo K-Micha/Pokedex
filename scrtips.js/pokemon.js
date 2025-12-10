@@ -1,10 +1,9 @@
-// Pokemon Card rendern
+// Pokemon Card rendern 
 let pokemons = [];
 let offset = 0;
 
 const API_BASE = "https://pokeapi.co/api/v2";
 const LIMIT = 20;
-
 
 const TYPE_COLORS = {
   normal: "#A8A878",
@@ -32,7 +31,7 @@ function getTypeColor(pokemon) {
   return TYPE_COLORS[mainType] || "#888";
 }
 
-// load 
+// Pokemon laden
 async function loadMore() {
   const res = await fetch(`${API_BASE}/pokemon?limit=${LIMIT}&offset=${offset}`);
   const data = await res.json();
@@ -45,11 +44,10 @@ async function loadMore() {
   offset += LIMIT;
 }
 
-//  rendern 
+// Liste rendern 
 function renderList(list) {
   const loader = document.getElementById("loader");
   if (loader && !loader.classList.contains("hidden")) {
-   
     return;
   }
 
@@ -62,6 +60,7 @@ function renderList(list) {
     const card = document.createElement("section");
     card.className = "pokemon_card";
     card.style.background = `linear-gradient(135deg, ${getTypeColor(p)}, #222)`;
+    card.setAttribute("onclick", "show_detail(" + p.id + ")");
 
     const typesHtml = p.types
       .map(
@@ -97,11 +96,14 @@ function renderList(list) {
   });
 }
 
-// Helper
+
 function getPokemonImage(pokemon) {
   return (
-    pokemon.sprites?.other?.["official-artwork"]?.front_default ||
-    pokemon.sprites?.front_default ||
+    (pokemon.sprites &&
+      pokemon.sprites.other &&
+      pokemon.sprites.other["official-artwork"] &&
+      pokemon.sprites.other["official-artwork"].front_default) ||
+    (pokemon.sprites && pokemon.sprites.front_default) ||
     ""
   );
 }

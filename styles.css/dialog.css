@@ -1,0 +1,89 @@
+.pokemon_dialog {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.pokemon_dialog.show {
+  display: block;
+      align-content: space-around;
+}
+.dialog_header{
+  padding: 20px;
+  border-radius: 25px 25px 0 0;
+}
+.pokemon_dialog .content {
+  background: #fff;
+  border-radius: 26px;
+  max-width: 350px;
+  margin: 40px auto;
+  
+}
+.main_content{
+  margin-top: -25px;
+    border-radius: 20px;
+    background: white;
+    padding-left: 25px;
+}
+.basic_stats{
+  display: none;
+}
+.stats_tamplete{
+  display: none;
+}
+.evo_box {
+    display: none;
+}
+
+
+.basic_stats.active{
+  display: block;
+}
+.stats_tamplete.active{
+  display: block;
+}
+.evo_box.active {
+    display: block;
+}
+
+
+.tabs .btn_active {
+    background: #333;
+    color: #fff;
+}
+.dialog_footer{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+.next_container, .back_container{
+  margin: 20px;
+}
+.next_btn, .back_btn{
+    font-size: 32px;
+    width: 50px;
+    height: 50px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.08);
+    border: none;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid black;
+}
+.evo_img{
+  width: 40px !important;
+}
+.evo_name{
+  font-size: 18px;
+}
+.evo_chain{
+  display: flex;
+    flex-direction: row;
+}
