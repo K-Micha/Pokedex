@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,106 +8,151 @@
     <link rel="icon" type="image/x-icon" href="/assets/bilder/pokemon-1635610_1280.webp">
     <link rel="stylesheet" href="./styles.css/basic.css">
     <link rel="stylesheet" href="./styles.css/style.css">
+    <link rel="stylesheet" href="./styles.css/dialog.css">
     <script src="./scrtips.js/pokemon.js" defer></script>
     <script src="./scrtips.js/main.js" defer></script>
 </head>
+
 <body onload="onloadFunc()">
     <div class="content-wrapper">
-    <header>
-        <div class="header_inner">
-        <div class="header_left">
-            <img class="logo" src="./assets/bilder/pokeball-1594373_1280.webp" alt="Pokédex logo">
-            <h1>Pokédex</h1>
-        </div>
-        <div class="header_right">
-            <input id="search_input" type="text" placeholder="search Pokémon...">
-            <button id="search_btn btn" onclick="filterPokemons()">search</button>
-        </div>
-        </div>
-    </header>
+        <header>
+            <div class="header_inner">
+                <div class="header_left">
+                    <img class="logo" src="./assets/bilder/pokeball-1594373_1280.webp" alt="Pokédex logo">
+                    <h1>Pokédex</h1>
+                </div>
+                <div class="header_right">
+                    <input id="search_input" type="text" placeholder="search Pokémon...">
+                    <button id="search_btn btn" onclick="filterPokemons()">search</button>
+                </div>
+            </div>
+        </header>
 
-    <main>
-          <!-- pokemon_container -->
-        <div id="pokemon_container" class="pokemon_container">
-            <section class="pokemon_card" onclick="show_detail()">
-                <div class="name_container">
-                <h3>#1 Bulbasaur</h3>
-                </div>
-                <img src="" alt="">
-                <div class="type_badges">
-                <span class="type_badge"></span>
-                </div>
-                </section>
-            
-        <!-- pokemon_dialog -->
-        <section role="dialog" aria-modal="true" class="pokemon_dialog">
-            <div class="dialog_header">
-                <div class="dialog_btn">
-                    <button class="dialog_btn_close btn" onclick="dialog_btn_close()">X</button>
-                </div>
-                <div class="pokemon_info">
-                <span id="pokemon_id"></span>
-                <h2 id="pokemon_name"></h2>
-                <p id="pokemon_typ"></p>
-                </div>
+        <main>
+            <!-- pokemon container -->
+            <div id="pokemon_container" class="pokemon_container">
             </div>
-        
-       <!-- pokemon_dialog_container -->
-        <section class="content">
-            <nav class="tabs">
-                <button onclick="information()" class="btn" id="information">Überblick</button>
-                <button onclick="stats()" class="btn" id="stats">Werte</button>
-                <button onclick="evo()" class="btn" id="evo">Entwicklung</button>
-            </nav>
 
-        <article class="pokemon_stats">
-            <div class="basic_stats">#
-                <div class="stats_container">
-                    <p id="pokemon_height"></p>
-                </div>
-                <div class="stats_container">
-                    <p id="pokemon_weight"></p>
-                </div>
-                <div class="stats_container">
-                    <p id="basic_ep"></p>
-                </div>
-            </div>
-            <div class="stats_tamplete">
-                <ul>
-                    <li id="pokemon_kp"></li>
-                    <li id="pokemon_dmg"></li>
-                    <li id="pokemon_def"></li>
-                    <li id="pokemon_s_dmg"></li>
-                    <li id="pokemon_s_def"></li>
-                    <li id="pokemon_Initiative"></li>
-                </ul>
-            </div>
-        </article>
-           <div class="dialog_footer">
-            <div class="next_container">
-                <button onclick="next_btn()" class="next_btn"></button>
-            </div>
-            <div class="back_container">
-                <button onclick="back_btn()" class="back_btn"></button>
-            </div>
-            </div>
-        </section>
-        </div>
-     </section>
-     <div id="loader" class="hidden">
-     <img class="spin_ball" src="./assets/bilder/pokeball-solid (1).svg" alt="Loading..." />
-    </div>
-     <button id="loadMoreBtn" onclick="more()">Mehr laden</button>
-    </main>
 
-    <footer>
-        <div>
-            @2025 Copyright M.Kühn
-        </div>
-        <div>
-            Impressum
-        </div>
-    </footer>
+            <!-- pokemon dialog -->
+            <section role="dialog" aria-modal="true" id="pokemon_dialog" class="pokemon_dialog" >
+                <div class="content">
+                    <div class="header_content">
+                <div class="dialog_header" id="dialog_header">
+                    <div class="dialog_btn">
+                        <button class="dialog_btn_close btn" onclick="dialog_btn_close()">X</button>
+                    </div>
+                    <div class="pokemon_info">
+                        <span id="pokemon_id"></span>
+                        <h2 id="pokemon_name"></h2>
+                        <p id="pokemon_typ"></p>
+                    </div>
+                    <div class="dialog_img_box">
+                        <img id="dialog_pokemon_img" src="" alt="">
+                    </div>
+                </div>
+                <div class="main_content">
+                <!-- dialog_container -->
+                
+                    <nav class="tabs">
+                        <button onclick="information()" class="btn" id="information">Überblick</button>
+                        <button onclick="stats()" class="btn" id="stats">Werte</button>
+                        <button onclick="evo()" class="btn" id="evo">Entwicklung</button>
+                    </nav>
+                    
+                    <article class="pokemon_stats">
+                        <div class="basic_stats" id="basic_stats">
+                            <div class="stats_container">
+                                <p>Height</p>
+                                <p id="pokemon_height"></p>
+                            </div>
+                            <div class="stats_container">
+                                <p>Weight</p>
+                                <p id="pokemon_weight"></p>
+                            </div>
+                            <div class="stats_container">
+                                <p>EP</p>
+                                <p id="basic_ep"></p>
+                            </div>
+                            </div>
+                            <div class="moves_container">
+                                <p id="pokemon_move_1"></p>
+                                <p id="pokemon_move_2"></p>
+                                <p id="pokemon_move_3"></p>
+                                <p id="pokemon_move_4"></p>
+                            </div>
+                        
+
+                        <div class="stats_tamplete" id="stats_tamplete">
+                            <ul>
+                                <li id="pokemon_kp"></li>
+                                <li id="pokemon_dmg"></li>
+                                <li id="pokemon_def"></li>
+                                <li id="pokemon_s_dmg"></li>
+                                <li id="pokemon_s_def"></li>
+                                <li id="pokemon_Initiative"></li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <div class="evo_box">
+                        <h3>Entwicklungskette</h3>
+
+                        <div class="evo_chain">
+                            <!-- Step 1 -->
+                            <div class="evo_step">
+                                <p class="evo_stage">Stufe 1</p>
+                                <img id="evo_img_1" class="evo_img" src="" alt="">
+                                <p id="evo_name_1" class="evo_name"></p>
+                            </div>
+
+                            <div class="evo_arrow">→</div>
+
+                            <!-- Step 2 -->
+                            <div class="evo_step">
+                                <p class="evo_stage">Stufe 2</p>
+                                <img id="evo_img_2" class="evo_img" src="" alt="">
+                                <p id="evo_name_2" class="evo_name"></p>
+                            </div>
+
+                            <div class="evo_arrow">→</div>
+
+                            <!-- Step 3 -->
+                            <div class="evo_step">
+                                <p class="evo_stage">Stufe 3</p>
+                                <img id="evo_img_3" class="evo_img" src="" alt="">
+                                <p id="evo_name_3" class="evo_name"></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="dialog_footer">
+                        <div class="next_container">
+                            <button onclick="next_btn()" class="next_btn">🠖</button>
+                        </div>
+                        <div class="back_container">
+                            <button onclick="back_btn()" class="back_btn">🠔</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            </section>
+            <div id="loader" class="hidden">
+                <img class="spin_ball" src="./assets/bilder/pokeball-solid.svg" alt="Loading..." />
+            </div>
+            <button id="loadMoreBtn" onclick="more()">Mehr laden</button>
+        </main>
+
+        <footer>
+            <div class="Copyright">
+                @2025 Copyright M.Kühn
+            </div>
+            <div class="footer_right">
+                Impressum
+            </div>
+        </footer>
     </div>
 </body>
 </html>
