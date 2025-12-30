@@ -74,10 +74,15 @@ function updateDialogHeader(p) {
   idEl.textContent = "#" + p.id;
   nameEl.textContent = capitalize(p.name);
 
-  const types = p.types.map((t) => t.type.name).join(", ");
-  typeEl.textContent = types;
+typeEl.innerHTML = ""; 
+p.types.forEach(t => {
+  const line = document.createElement("p");
+  line.textContent = t.type.name;
+  typeEl.appendChild(line);
+});
 
   header.style.background = getTypeColor(p);
+  
 }
 
 function updateDialogImage(p) {
@@ -116,8 +121,13 @@ function updateOverview(p) {
 
   updateOverviewMoves(p);
 }
+async function getMoveType(moveUrl) {
+  const res = await fetch(moveUrl);
+  const data = await res.json();
+  return data.type.name; 
+}
 
-function updateOverviewMoves(p) {
+async function updateOverviewMoves(p) {
   const moves = (p.moves && p.moves.slice(0, 4)) || [];
 
   for (let i = 0; i < 4; i++) {
@@ -127,12 +137,20 @@ function updateOverviewMoves(p) {
     const move = moves[i];
     if (!move) {
       el.textContent = "";
+      el.style.background = "";
       continue;
     }
 
-    el.textContent = "Attacke " + (i + 1) + ": " + capitalize(move.move.name);
+    const moveName = capitalize(move.move.name);
+    el.textContent = "Attacke: " + moveName;
+
+    // Moves Typ  
+    const typeName = await getMoveType(move.move.url);
+    el.style.background = TYPE_COLORS[typeName] || "#ccc";
   }
 }
+
+
 
 // Stats
 function updateStats(p) {
@@ -146,12 +164,12 @@ function updateStats(p) {
   const sDef = document.getElementById("pokemon_s_def");
   const init = document.getElementById("pokemon_Initiative");
 
-  if (kp) kp.textContent = "KP: " + s[0].base_stat;
-  if (dmg) dmg.textContent = "Dmg: " + s[1].base_stat;
-  if (def) def.textContent = "Def: " + s[2].base_stat;
-  if (sDmg) sDmg.textContent = "Spez. Dmg: " + s[3].base_stat;
-  if (sDef) sDef.textContent = "Spez. Def: " + s[4].base_stat;
-  if (init) init.textContent = "Initiative: " + s[5].base_stat;
+  if (kp) kp.textContent = " " + s[0].base_stat;
+  if (dmg) dmg.textContent = " " + s[1].base_stat;
+  if (def) def.textContent = " " + s[2].base_stat;
+  if (sDmg) sDmg.textContent = " " + s[3].base_stat;
+  if (sDef) sDef.textContent = " " + s[4].base_stat;
+  if (init) init.textContent = " " + s[5].base_stat;
 }
 
 // Evolution Tab
@@ -214,6 +232,32 @@ async function updateEvoStage(stages, stage) {
   imgEl.src = id ? await getSprite(id) : "";
 }
 
+function hideEmptyEvolutionSteps(stages) {
+  for (let i = 1; i <= 3; i++) {
+    const boxEl = document.getElementById("step_" + i);
+    const arrowEl = document.getElementById("arrow_" + i);
+
+    if (!boxEl) continue;
+
+    if (!stages[i - 1]) {
+      
+      boxEl.style.display = "none";
+    } else {
+      
+      boxEl.style.display = "";
+    }
+
+    
+    if (arrowEl) {
+      if (!stages[i]) {
+        arrowEl.style.display = "none";
+      } else {
+        arrowEl.style.display = "";
+      }
+    }
+  }
+}
+
 async function updateEvolution(p) {
   const species = await loadSpecies(p.id);
   const chain = await loadChain(species.evolution_chain.url);
@@ -222,7 +266,11 @@ async function updateEvolution(p) {
   await updateEvoStage(stages, 1);
   await updateEvoStage(stages, 2);
   await updateEvoStage(stages, 3);
+  hideEmptyEvolutionSteps(stages);
+
+  
 }
+
 
 // Section Button Reset
 function resetSections() {
@@ -301,6 +349,7 @@ async function evo() {
     await updateEvolution(p);
   }
 }
+
 
 //Pokemon in Dialog
 function showCurrentPokemon() {

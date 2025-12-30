@@ -112,3 +112,83 @@ function capitalize(str) {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+
+function getSearchValue() {
+  const input = document.getElementById("search_input");
+  if (!input) return "";
+  return input.value.trim().toLowerCase();
+}
+
+function setSearchHint(visible) {
+  const hint = document.getElementById("search_hint");
+  if (!hint) return;
+
+  if (visible) {
+    hint.classList.add("active");
+  } else {
+    hint.classList.remove("active");
+  }
+}
+
+async function searchById(value) {
+  const id = Number(value);
+  let found = pokemons.find(p => p.id === id);
+
+  if (!found) {
+    const res = await fetch(`${API_BASE}/pokemon/${id}`);
+    if (res.ok) {
+      found = await res.json();
+      if (!pokemons.some(p => p.id === found.id)) {
+        pokemons.push(found);
+      }
+    }
+  }
+
+  renderList(found ? [found] : []);
+}
+
+async function searchByName(value) {
+  let filtered = pokemons.filter(p => p.name.includes(value));
+  if (filtered.length) {
+    renderList(filtered);
+    return;
+  }
+
+  const MAX_PAGES = 30;
+  for (let i = 0; i < MAX_PAGES; i++) {
+    await loadMore();
+    filtered = pokemons.filter(p => p.name.includes(value));
+    if (filtered.length) {
+      renderList(filtered);
+      return;
+    }
+  }
+
+  renderList([]);
+}
+
+async function filterPokemons() {
+  const value = getSearchValue();
+
+  if (value === "") {
+    setSearchHint(false);
+    renderList(pokemons);
+    return;
+  }
+
+  if (!isNaN(value)) {
+    setSearchHint(false);
+    await searchById(value);
+    return;
+  }
+
+  if (value.length < 3) {
+    setSearchHint(true);
+    renderList([]);
+    return;
+  }
+
+  setSearchHint(false);
+  await searchByName(value);
+}
