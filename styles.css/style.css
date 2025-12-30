@@ -192,3 +192,6 @@ footer{
 h1{
     color: #0b1020;
 }
+main{
+        min-height: 80vh;
+}
