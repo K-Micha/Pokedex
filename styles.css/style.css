@@ -1,3 +1,13 @@
+#loadMoreBtn,
+#footer {
+  opacity: 0;              
+  animation: fadeIn 0.5s ease forwards;
+  animation-delay: 2.2s;
+
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
 
 header{
     height: 80px;
@@ -69,7 +79,7 @@ flex: 0 0 auto;
     pointer-events: none;
 }
 .dialog_pokemon_img{
-    width: 120px;
+    height: 140px;
     user-select: none;
     pointer-events: none;
 }
@@ -116,6 +126,48 @@ body{
     align-content: center;
     justify-content: space-evenly;
 }
-.basic_stats:not(.active) ~ .moves_container {
-    display: none;
+footer{
+        height: 80px;
+}
+.typ_wrapper{
+    position: absolute;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    gap: 4px;
+    min-height: 24px;
+    z-index: 10;
+}
+.position{
+    display: flex;
+    justify-content: space-around;
+    padding: 30px;
+}
+.load_more_btn{
+    margin: 24px auto 16px;
+    padding: 10px 24px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    background: linear-gradient(327deg, #635c4554, #ffffff);
+    color: #0b1020;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+    transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+}
+.search_btn{
+    border: none;
+}
+.search_input{
+    border: none;
+    min-width: 180px;
+    padding: 8px;
+}
+.header_right{
+          padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
 }
