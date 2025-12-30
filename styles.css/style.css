@@ -158,6 +158,7 @@ footer{
 }
 .search_btn{
     border: none;
+    cursor: pointer;
 }
 .search_input{
     border: none;
@@ -168,6 +169,26 @@ footer{
           padding: 8px 12px;
     border-radius: 8px;
     border: none;
-    cursor: pointer;
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+#search_hint {
+  display: none;
+  font-size: 13px;
+  margin-top: 6px;
+  color: #c62828;
+}
+
+#search_hint.active {
+      display: flex;
+    flex-direction: row-reverse;
+    margin-top: 16px;
+    font-size: 13px;
+}
+.btn{
+    cursor: pointer;
+}
+
+h1{
+    color: #0b1020;
 }
