@@ -49,7 +49,7 @@ display: flex;
   }
     
 }
-@media (min-width: 940px){
+@media (min-width: 840px){
     .pokemon_card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 24px rgba(0,0,0,0.18);
@@ -66,5 +66,4 @@ display: flex;
 .type_badge:hover {
   filter: brightness(1.08);
 }
-
 }

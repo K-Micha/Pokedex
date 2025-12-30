@@ -167,28 +167,58 @@ async function searchByName(value) {
 
   renderList([]);
 }
+function getTypeQuery(value) {
+  const type = value.trim().toLowerCase();
+  return TYPE_COLORS[type] ? type : null;
+}
+
+function filterByType(type) {
+  return pokemons.filter(p =>
+    p.types.some(t => t.type.name === type)
+  );
+}
 
 async function filterPokemons() {
   const value = getSearchValue();
 
-  if (value === "") {
-    setSearchHint(false);
-    renderList(pokemons);
-    return;
-  }
+if (value === "") {
+  setSearchHint(false);
+  setLoadMoreVisible(true);
+  renderList(pokemons);
+  return;
+}
 
-  if (!isNaN(value)) {
-    setSearchHint(false);
-    await searchById(value);
-    return;
-  }
+ if (!isNaN(value)) {
+  setSearchHint(false);
+    setLoadMoreVisible(false);
 
-  if (value.length < 3) {
+  const id = Number(value);
+
+  if (id < 1) {
     setSearchHint(true);
     renderList([]);
     return;
   }
 
+  await searchById(value);
+  return;
+}
+
+
+  if (value.length < 3) {
+    setSearchHint(true);
+      setLoadMoreVisible(false);
+    renderList([]);
+    return;
+  }
+
   setSearchHint(false);
+  setLoadMoreVisible(false);
   await searchByName(value);
+}
+
+function setLoadMoreVisible(visible) {
+  const btn = document.getElementById("loadMoreBtn");
+  if (!btn) return;
+  btn.style.display = visible ? "block" : "none";
 }
