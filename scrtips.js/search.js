@@ -1,3 +1,4 @@
+let pokemonNameIndex = null;
 
 function getSearchValue() {
     const input = document.getElementById("search_input");
@@ -5,15 +6,28 @@ function getSearchValue() {
     return input.value.trim().toLowerCase();
 }
 
-function setSearchHint(visible) {
+function setSearchHint(visible, text) {
     const hint = document.getElementById("search_hint");
     if (!hint) return;
+
+    if (text) {
+        hint.textContent = text;
+    }
 
     if (visible) {
         hint.classList.add("active");
     } else {
         hint.classList.remove("active");
     }
+}
+
+
+async function ensurePokemonNameIndex() {
+    if (pokemonNameIndex) return;
+
+    const res = await fetch(`${API_BASE}/pokemon?limit=2000`);
+    const data = await res.json();
+    pokemonNameIndex = data.results || [];
 }
 
 async function searchById(value) {
@@ -33,25 +47,36 @@ async function searchById(value) {
     renderList(found ? [found] : []);
 }
 
+
 async function searchByName(value) {
-    let filtered = pokemons.filter(p => p.name.includes(value));
-    if (filtered.length) {
-        renderList(filtered);
+    const name = value.trim().toLowerCase();
+
+    const cached = pokemons.find(p => p.name === name);
+    if (cached) {
+        renderList([cached]);
         return;
     }
 
-    const MAX_PAGES = 30;
-    for (let i = 0; i < MAX_PAGES; i++) {
-        await loadMore();
-        filtered = pokemons.filter(p => p.name.includes(value));
-        if (filtered.length) {
-            renderList(filtered);
-            return;
-        }
+    const res = await fetch(`${API_BASE}/pokemon/${name}`);
+    if (!res.ok) {
+        renderList([]);
+        return;
     }
 
-    renderList([]);
+    const found = await res.json();
+    pokemons.push(found);
+    renderList([found]);
 }
+
+
+function findLocalMatches(value) {
+    return pokemons.filter(p => p.name.includes(value));
+}
+
+function findIndexMatches(value) {
+    return pokemonNameIndex.filter(p => p.name.includes(value));
+}
+
 function getTypeQuery(value) {
     const type = value.trim().toLowerCase();
     return TYPE_COLORS[type] ? type : null;
@@ -72,8 +97,6 @@ async function filterPokemons() {
 
     await handleNameSearch(value);
 }
-
-// --- cases ---
 
 function handleEmptySearch(value) {
     if (value !== "") return false;
@@ -104,18 +127,36 @@ async function handleNumericSearch(value) {
 function handleTooShortName(value) {
     if (value.length >= 3) return false;
 
+    setSearchHint(true, "Please enter at least 3 letters or an ID");
     setSearchHint(true);
     setLoadMoreVisible(false);
     renderList([]);
     return true;
 }
 
+
 async function handleNameSearch(value) {
     setSearchHint(false);
     setLoadMoreVisible(false);
-    await searchByName(value);
+
+    const local = findLocalMatches(value);
+    if (local.length) {
+        renderList(local);
+        return;
+    }
+
+    await ensurePokemonNameIndex();
+
+    const matches = findIndexMatches(value);
+    if (!matches.length) {
+    setSearchHint(true, "No Pokémon found");
+    renderList([]);
+    return;
 }
 
+
+    await searchByName(matches[0].name);
+}
 
 function setLoadMoreVisible(visible) {
     const btn = document.getElementById("loadMoreBtn");
