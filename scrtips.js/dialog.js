@@ -1,5 +1,3 @@
-
-// Dialog-Header
 function updateDialogHeader(p) {
     const idEl = document.getElementById("pokemon_id");
     const nameEl = document.getElementById("pokemon_name");
@@ -40,7 +38,7 @@ function updateDialogImage(p) {
     img.alt = p.name;
 }
 
-// Overview
+
 function updateOverview(p) {
     const h = document.getElementById("pokemon_height");
     const w = document.getElementById("pokemon_weight");
@@ -111,7 +109,7 @@ function isEvoTabActive() {
 }
 
 
-// Dialog open/close
+// open/close
 function show_detail(id) {
     const index = pokemons.findIndex((pokemon) => pokemon.id === id);
     if (index === -1) return;
@@ -140,7 +138,7 @@ function dialog_btn_close() {
     setDialogState(false);
 }
 
-// Dialog Overlay 
+
 function initDialogOverlay() {
     const dialog = document.getElementById("pokemon_dialog");
     if (!dialog) return;
@@ -157,7 +155,7 @@ function initDialogOverlay() {
     });
 }
 
-// Buttons
+
 function next_btn() {
     if (!pokemons.length) return;
 

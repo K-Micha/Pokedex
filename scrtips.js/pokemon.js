@@ -1,4 +1,3 @@
-// Pokemon Card rendern 
 let pokemons = [];
 let offset = 0;
 
@@ -31,7 +30,6 @@ function getTypeColor(pokemon) {
   return TYPE_COLORS[mainType] || "#888";
 }
 
-// Pokemon laden
 async function loadMore() {
   const res = await fetch(`${API_BASE}/pokemon?limit=${LIMIT}&offset=${offset}`);
   const data = await res.json();
@@ -57,8 +55,6 @@ function renderList(list) {
   });
 }
 
-// --- helpers ---
-
 function isLoaderVisible() {
   const loader = document.getElementById("loader");
   return loader && !loader.classList.contains("hidden");
@@ -72,7 +68,7 @@ function createPokemonCard(p) {
   const card = document.createElement("section");
   card.className = "pokemon_card";
   card.style.background = getCardBackground(p);
-  card.onclick = () => show_detail(p.id); // besser als setAttribute("onclick", ...)
+  card.onclick = () => show_detail(p.id); 
 
   card.innerHTML = cardTemplate(p);
   return card;
@@ -82,41 +78,18 @@ function getCardBackground(p) {
   return `linear-gradient(135deg, ${getTypeColor(p)}, #222)`;
 }
 
-function cardTemplate(p) {
-  const typesHtml = typesTemplate(p.types);
+function createPokemonCard(p) {
+  const card = document.createElement("section");
+  card.className = "pokemon_card";
+  card.style.background = getCardBackground(p);
+  card.onclick = () => show_detail(p.id);
+
   const imgSrc = getPokemonImage(p);
+  const typesHtml = typesTemplate(p.types);
 
-  return `
-    <div class="card_header">
-      <h3>#${p.id} ${capitalize(p.name)}</h3>
-    </div>
-
-    <div class="card_body">
-      <div class="card_left">
-        <div class="type_badges">
-          ${typesHtml}
-        </div>
-      </div>
-
-      <div class="card_right">
-        <img class="pokemon_img" src="${imgSrc}" alt="${p.name}">
-      </div>
-    </div>
-  `;
+  card.innerHTML = cardTemplate(p, imgSrc, typesHtml);
+  return card;
 }
-
-function typesTemplate(types) {
-  return types
-    .map(
-      (t) => `
-        <div class="type_box">
-          <span class="type_badge">${capitalize(t.type.name)}</span>
-        </div>
-      `
-    )
-    .join("");
-}
-
 
 function getPokemonImage(pokemon) {
   return (

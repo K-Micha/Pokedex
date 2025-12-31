@@ -3,7 +3,7 @@ let firstLoad = true;
 let isLoading = false;
 let currentIndex = 0;
 
-// Loader
+
 function showLoader() {
   const loader = document.getElementById("loader");
   if (loader) {
@@ -20,33 +20,52 @@ function hideLoader() {
 
 async function loadWithLoader() {
   if (isLoading) return;
-  isLoading = true;
+  setLoading(true);
 
-  const start = Date.now();
-  showLoader();
-
+  const start = startLoadingUi();
   await loadMore();
+  await waitMinLoadTime(start);
 
+  finishLoadingUi();
+  showGridOnFirstLoad();
+
+  setLoading(false);
+}
+
+
+function setLoading(state) {
+  isLoading = state;
+}
+
+function startLoadingUi() {
+  showLoader();
+  return Date.now();
+}
+
+async function waitMinLoadTime(start) {
   const elapsed = Date.now() - start;
   const wait = Math.max(0, MIN_LOAD_TIME - elapsed);
+  if (wait) await sleep(wait);
+}
 
-  if (wait > 0) {
-    await new Promise((res) => setTimeout(res, wait));
-  }
-
+function finishLoadingUi() {
   hideLoader();
   renderList(pokemons);
-
-  if (firstLoad) {
-    const grid = document.getElementById("pokemon_container");
-    if (grid) {
-      grid.classList.remove("hidden");
-    }
-    firstLoad = false;
-  }
-
-  isLoading = false;
 }
+
+function showGridOnFirstLoad() {
+  if (!firstLoad) return;
+
+  const grid = document.getElementById("pokemon_container");
+  if (grid) grid.classList.remove("hidden");
+
+  firstLoad = false;
+}
+
+function sleep(ms) {
+  return new Promise((res) => setTimeout(res, ms));
+}
+
 
 async function onloadFunc() {
   const grid = document.getElementById("pokemon_container");
@@ -62,7 +81,6 @@ async function more() {
   await loadWithLoader();
 }
 
-// Stats
 function updateStats(p) {
   const s = p.stats;
   if (!s || s.length < 6) return;
@@ -84,10 +102,17 @@ function updateStats(p) {
 
 // Evolution Tab
 async function loadSpecies(id) {
-  const res = await fetch("https://pokeapi.co/api/v2/pokemon-species/" + id);
-  return await res.json();
+  try {
+    const res = await fetch(`${API_BASE}/pokemon-species/${id}`);
+    if (!res.ok) throw new Error("Species fetch failed");
 
+    return await res.json();
+  } catch (err) {
+    console.error("loadSpecies:", err);
+    return null;
+  }
 }
+
 
 async function loadChain(url) {
   const res = await fetch(url);
@@ -111,18 +136,24 @@ function getIdFromSpecies(species) {
 }
 
 async function getSprite(id) {
-  const res = await fetch("https://pokeapi.co/api/v2/pokemon/" + id);
-  const data = await res.json();
+  try {
+    const res = await fetch(`${API_BASE}/pokemon/${id}`);
+    if (!res.ok) throw new Error("Sprite fetch failed");
 
-  const art =
-    data.sprites &&
-    data.sprites.other &&
-    data.sprites.other["official-artwork"] &&
-    data.sprites.other["official-artwork"].front_default;
-  const normal = data.sprites && data.sprites.front_default;
+    const data = await res.json();
 
-  return art || normal || "";
+    return (
+      data.sprites?.other?.["official-artwork"]?.front_default ||
+      data.sprites?.front_default ||
+      ""
+    );
+  } catch (err) {
+    console.error("getSprite:", err);
+    return "";
+  }
 }
+
+
 
 async function updateEvoStage(stages, stage) {
   const species = stages[stage - 1];
@@ -177,12 +208,8 @@ async function updateEvolution(p) {
   await updateEvoStage(stages, 2);
   await updateEvoStage(stages, 3);
   hideEmptyEvolutionSteps(stages);
-
-
 }
 
-
-// Section Button Reset
 function resetSections() {
   const basicList = document.getElementsByClassName("basic_stats");
   const statsList = document.getElementsByClassName("stats_tamplete");
