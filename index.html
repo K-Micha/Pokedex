@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="./assets/fonts/PTSans-Bold.ttf">
     <script src="./scrtips.js/pokemon.js" defer></script>
     <script src="./scrtips.js/main.js" defer></script>
+    <script src="./scrtips.js/search.js" defer></script>
+    <script src="./scrtips.js/dialog.js" defer></script>
+    <script src="./scrtips.js/taps.js" defer></script>
 </head>
 
 <body onload="onloadFunc()">
@@ -23,7 +26,7 @@
                 <div class="header_left">
                     <img class="logo" src="./assets/bilder/pokeball-1594373_1280.webp" alt="Pokédex logo">
                     <a href="./index.html">
-                    <h1>Pokédex</h1>
+                        <h1>Pokédex</h1>
                     </a>
                 </div>
                 <div class="header_right">
@@ -32,8 +35,8 @@
                 </div>
             </div>
             <div id="search_hint" class="search_msg">
-  Please enter at least 3 letters or the Pokémon ID.
-</div>
+                Please enter at least 3 letters or the Pokémon ID.
+            </div>
         </header>
 
         <main>
@@ -43,143 +46,143 @@
 
 
             <!-- pokemon dialog -->
-            <section role="dialog" aria-modal="true" id="pokemon_dialog" class="pokemon_dialog" >
+            <section role="dialog" aria-modal="true" id="pokemon_dialog" class="pokemon_dialog">
                 <div class="content">
                     <div class="header_content">
-                        
-                <div class="dialog_header" id="dialog_header">
-                    <div class="dialog_btn">
-                        <span id="pokemon_id"></span>
-                        <button class="dialog_btn_close btn" onclick="dialog_btn_close()">X</button>
-                    </div>
-                    <div class="pokemon_info">
 
-                        <h2 id="pokemon_name"></h2>
-                        <div class="typ_wrapper">
-                        <p class="pokemon_typ" id="pokemon_typ"></p>
-                        </div>
-                    </div>
-
-                    <div class="dialog_img_box">
-                        
-                        <img id="dialog_pokemon_img" src="" alt="">
-                    </div>
-                </div>
-                <div class="main_content">
-                <!-- dialog_container -->
-                
-                    <nav class="tabs">
-                        <button onclick="information()" class="btn tab_btn" id="information">Overview</button>
-                        <button onclick="stats()" class="btn tab_btn" id="stats">Stats</button>
-                        <button onclick="evo()" class="btn tab_btn" id="evo">Evolution</button>
-                    </nav>
-                    
-                    <article class="pokemon_stats">
-                        <div class="basic_stats" id="basic_stats">
-                            <ul>
-                                <li class="stats_container">
-                                    <span>Height</span>
-                                    <span id="pokemon_height"></span>
-                                </li>
-                                <li class="stats_container">
-                                    <span>Weight</span>
-                                    <span id="pokemon_weight"></span>
-                                </li>
-                                <li class="stats_container">
-                                    <span>EP</span>
-                                    <span id="basic_ep"></span>
-                                </li>
-                            </ul>
-                            
+                        <div class="dialog_header" id="dialog_header">
+                            <div class="dialog_btn">
+                                <span id="pokemon_id"></span>
+                                <button class="dialog_btn_close btn" onclick="dialog_btn_close()">X</button>
                             </div>
-                            <div class="moves_container">
-                                <p class="pokemon_move" id="pokemon_move_1"></p>
-                                <p class="pokemon_move" id="pokemon_move_2"></p>
-                                <p class="pokemon_move" id="pokemon_move_3"></p>
-                                <p class="pokemon_move" id="pokemon_move_4"></p>
-                            </div>
-                        
+                            <div class="pokemon_info">
 
-                        <div class="stats_tamplete" id="stats_tamplete">
-                            <ul>
-                                <li >
-                                    <span>KP</span>
-                                    <span id="pokemon_kp"></span>
-                                </li>
-                                <li >
-                                    <span>Dmg</span>
-                                    <span id="pokemon_dmg"></span>
-                                </li>
-                                
-                                <li>
-                                    <span>Def</span>
-                                    <span id="pokemon_def"></span>
-                                </li>
-                                <li>
-                                    <span>Spez. Dmg</span>
-                                    <span id="pokemon_s_dmg"></span>
-                                </li>
-                                <li>
-                                    <span>Spez. Def</span>
-                                    <span id="pokemon_s_def"></span>
-                                </li>
-                                <li>
-                                        <span>Initiative</span>
-                                        <span  id="pokemon_Initiative"></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </article>
-
-                    <div class="evo_box">
-                        <h3>Evolution</h3>
-
-                        <div class="evo_chain">
-                            <!-- Step 1 -->
-                            <div id="step_1" class="evo_step">
-                                <p class="evo_stage">Step 1</p>
-                                <img id="evo_img_1" class="evo_img" src="" alt="">
-                                <p id="evo_name_1" class="evo_name"></p>
+                                <h2 id="pokemon_name"></h2>
+                                <div class="typ_wrapper">
+                                    <p class="pokemon_typ" id="pokemon_typ"></p>
+                                </div>
                             </div>
 
-                            <div id="arrow_1" class="evo_arrow">→</div>
+                            <div class="dialog_img_box">
 
-                            <!-- Step 2 -->
-                            <div id="step_2" class="evo_step">
-                                <p class="evo_stage">Step 2</p>
-                                <img id="evo_img_2" class="evo_img" src="" alt="">
-                                <p id="evo_name_2" class="evo_name"></p>
+                                <img id="dialog_pokemon_img" src="" alt="">
+                            </div>
+                        </div>
+                        <div class="main_content">
+                            <!-- dialog_container -->
+
+                            <nav class="tabs">
+                                <button onclick="information()" class="btn tab_btn" id="information">Overview</button>
+                                <button onclick="stats()" class="btn tab_btn" id="stats">Stats</button>
+                                <button onclick="evo()" class="btn tab_btn" id="evo">Evolution</button>
+                            </nav>
+
+                            <article class="pokemon_stats">
+                                <div class="basic_stats" id="basic_stats">
+                                    <ul>
+                                        <li class="stats_container">
+                                            <span>Height</span>
+                                            <span id="pokemon_height"></span>
+                                        </li>
+                                        <li class="stats_container">
+                                            <span>Weight</span>
+                                            <span id="pokemon_weight"></span>
+                                        </li>
+                                        <li class="stats_container">
+                                            <span>EP</span>
+                                            <span id="basic_ep"></span>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                                <div class="moves_container">
+                                    <p class="pokemon_move" id="pokemon_move_1"></p>
+                                    <p class="pokemon_move" id="pokemon_move_2"></p>
+                                    <p class="pokemon_move" id="pokemon_move_3"></p>
+                                    <p class="pokemon_move" id="pokemon_move_4"></p>
+                                </div>
+
+
+                                <div class="stats_tamplete" id="stats_tamplete">
+                                    <ul>
+                                        <li>
+                                            <span>KP</span>
+                                            <span id="pokemon_kp"></span>
+                                        </li>
+                                        <li>
+                                            <span>Dmg</span>
+                                            <span id="pokemon_dmg"></span>
+                                        </li>
+
+                                        <li>
+                                            <span>Def</span>
+                                            <span id="pokemon_def"></span>
+                                        </li>
+                                        <li>
+                                            <span>Spez. Dmg</span>
+                                            <span id="pokemon_s_dmg"></span>
+                                        </li>
+                                        <li>
+                                            <span>Spez. Def</span>
+                                            <span id="pokemon_s_def"></span>
+                                        </li>
+                                        <li>
+                                            <span>Initiative</span>
+                                            <span id="pokemon_Initiative"></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </article>
+
+                            <div class="evo_box">
+                                <h3>Evolution</h3>
+
+                                <div class="evo_chain">
+                                    <!-- Step 1 -->
+                                    <div id="step_1" class="evo_step">
+                                        <p class="evo_stage">Step 1</p>
+                                        <img id="evo_img_1" class="evo_img" src="" alt="">
+                                        <p id="evo_name_1" class="evo_name"></p>
+                                    </div>
+
+                                    <div id="arrow_1" class="evo_arrow">→</div>
+
+                                    <!-- Step 2 -->
+                                    <div id="step_2" class="evo_step">
+                                        <p class="evo_stage">Step 2</p>
+                                        <img id="evo_img_2" class="evo_img" src="" alt="">
+                                        <p id="evo_name_2" class="evo_name"></p>
+                                    </div>
+
+                                    <div id="arrow_2" class="evo_arrow">→</div>
+
+                                    <!-- Step 3 -->
+                                    <div id="step_3" class="evo_step">
+                                        <p class="evo_stage">Step 3</p>
+                                        <img id="evo_img_3" class="evo_img" src="" alt="">
+                                        <p id="evo_name_3" class="evo_name"></p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div id="arrow_2" class="evo_arrow">→</div>
 
-                            <!-- Step 3 -->
-                            <div id="step_3" class="evo_step">
-                                <p class="evo_stage">Step 3</p>
-                                <img id="evo_img_3" class="evo_img" src="" alt="">
-                                <p id="evo_name_3" class="evo_name"></p>
+                            <div class="dialog_footer">
+                                <div class="next_container">
+                                    <button onclick="next_btn()" class="next_btn">→</button>
+                                </div>
+                                <div class="back_container">
+                                    <button onclick="back_btn()" class="back_btn">←</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-
-                    <div class="dialog_footer">
-                        <div class="next_container">
-                            <button onclick="next_btn()" class="next_btn">🠖</button>
-                        </div>
-                        <div class="back_container">
-                            <button onclick="back_btn()" class="back_btn">🠔</button>
-                        </div>
-                    </div>
-                </div>
-                </div>
 
             </section>
             <div id="loader" class="hidden">
                 <img class="spin_ball" src="./assets/bilder/pokeball-solid.svg" alt="Loading..." />
             </div>
             <div class="position">
-            <button class="load_more_btn" id="loadMoreBtn" onclick="more()">load more</button>
+                <button class="load_more_btn" id="loadMoreBtn" onclick="more()">load more</button>
             </div>
         </main>
 
@@ -193,4 +196,5 @@
         </footer>
     </div>
 </body>
+
 </html>
