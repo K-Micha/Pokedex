@@ -68,7 +68,7 @@ function createPokemonCard(p) {
   const card = document.createElement("section");
   card.className = "pokemon_card";
   card.style.background = getCardBackground(p);
-  card.onclick = () => show_detail(p.id); 
+  card.onclick = () => show_detail(p.id);
 
   card.innerHTML = cardTemplate(p);
   return card;

@@ -18,7 +18,6 @@ function cardTemplate(p, imgSrc, typesHtml) {
   `;
 }
 
-
 function typesTemplate(types) {
   return types
     .map(

@@ -32,7 +32,6 @@ async function loadWithLoader() {
   setLoading(false);
 }
 
-
 function setLoading(state) {
   isLoading = state;
 }
@@ -65,7 +64,6 @@ function showGridOnFirstLoad() {
 function sleep(ms) {
   return new Promise((res) => setTimeout(res, ms));
 }
-
 
 async function onloadFunc() {
   const grid = document.getElementById("pokemon_container");
@@ -113,7 +111,6 @@ async function loadSpecies(id) {
   }
 }
 
-
 async function loadChain(url) {
   const res = await fetch(url);
   return await res.json();
@@ -152,8 +149,6 @@ async function getSprite(id) {
     return "";
   }
 }
-
-
 
 async function updateEvoStage(stages, stage) {
   const species = stages[stage - 1];

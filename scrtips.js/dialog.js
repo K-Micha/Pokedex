@@ -38,7 +38,6 @@ function updateDialogImage(p) {
     img.alt = p.name;
 }
 
-
 function updateOverview(p) {
     const h = document.getElementById("pokemon_height");
     const w = document.getElementById("pokemon_weight");
@@ -56,6 +55,7 @@ function updateOverview(p) {
 
     updateOverviewMoves(p);
 }
+
 async function getMoveType(moveUrl) {
     const res = await fetch(moveUrl);
     const data = await res.json();
@@ -84,6 +84,7 @@ async function updateOverviewMoves(p) {
         el.style.background = TYPE_COLORS[typeName] || "#ccc";
     }
 }
+
 function showCurrentPokemon() {
     if (!pokemons.length) return;
 
@@ -100,6 +101,7 @@ function showCurrentPokemon() {
     }
 
 }
+
 function isEvoTabActive() {
     const evoList = document.getElementsByClassName("evo_box");
     if (evoList.length === 0) return false;
@@ -107,7 +109,6 @@ function isEvoTabActive() {
     const evoBox = evoList[0];
     return evoBox.classList.contains("active");
 }
-
 
 // open/close
 function show_detail(id) {
@@ -138,7 +139,6 @@ function dialog_btn_close() {
     setDialogState(false);
 }
 
-
 function initDialogOverlay() {
     const dialog = document.getElementById("pokemon_dialog");
     if (!dialog) return;
@@ -154,7 +154,6 @@ function initDialogOverlay() {
         }
     });
 }
-
 
 function next_btn() {
     if (!pokemons.length) return;

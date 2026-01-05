@@ -21,7 +21,6 @@ function setSearchHint(visible, text) {
     }
 }
 
-
 async function ensurePokemonNameIndex() {
     if (pokemonNameIndex) return;
 
@@ -47,7 +46,6 @@ async function searchById(value) {
     renderList(found ? [found] : []);
 }
 
-
 async function searchByName(value) {
     const name = value.trim().toLowerCase();
 
@@ -67,7 +65,6 @@ async function searchByName(value) {
     pokemons.push(found);
     renderList([found]);
 }
-
 
 function findLocalMatches(value) {
     return pokemons.filter(p => p.name.includes(value));
@@ -134,7 +131,6 @@ function handleTooShortName(value) {
     return true;
 }
 
-
 async function handleNameSearch(value) {
     setSearchHint(false);
     setLoadMoreVisible(false);
@@ -149,10 +145,10 @@ async function handleNameSearch(value) {
 
     const matches = findIndexMatches(value);
     if (!matches.length) {
-    setSearchHint(true, "No Pokémon found");
-    renderList([]);
-    return;
-}
+        setSearchHint(true, "No Pokémon found");
+        renderList([]);
+        return;
+    }
 
 
     await searchByName(matches[0].name);
